@@ -19,6 +19,7 @@ public class CarroService {
        Carro carro = new Carro();
        carro.setMarca(jsonRequisicao.getMarca());
        carro.setModelo(jsonRequisicao.getModelo());
+       carro.setPlaca(jsonRequisicao.getPlaca());
        carro.setCor(jsonRequisicao.getCor());
        carro.setAno(jsonRequisicao.getAno());
        carro.setStatus(jsonRequisicao.getStatus());
@@ -29,6 +30,7 @@ public class CarroService {
        CarroDTO dto = new CarroDTO();
        dto.setId(carrolSalvoNoBanco.getId());
        dto.setModelo(carrolSalvoNoBanco.getModelo());
+       dto.setPlaca(jsonRequisicao.getPlaca());
        dto.setCor(carrolSalvoNoBanco.getCor());
        dto.setStatus(carrolSalvoNoBanco.getStatus());
        dto.setAno(carrolSalvoNoBanco.getAno());
@@ -38,13 +40,14 @@ public class CarroService {
     }
     public CarroDTO update(CarroDTO carroDaRequisicao){
 
-        Optional<Carro> carroOptional = carroRepository.findById(carroDaRequisicao.getId());
+        Optional<Carro> carroOptional = carroRepository.findByPlaca(carroDaRequisicao.getPlaca());
         Carro carroSalvoNoBanco;
         CarroDTO dto = new CarroDTO();
         if(carroOptional.isPresent()) {
             Carro carro = carroOptional.get();
             carro.setMarca(carroDaRequisicao.getMarca());
             carro.setModelo(carroDaRequisicao.getModelo());
+            carro.setPlaca(carroDaRequisicao.getPlaca());
             carro.setCor(carroDaRequisicao.getCor());
             carro.setAno(carroDaRequisicao.getAno());
             carro.setStatus(carroDaRequisicao.getStatus());
@@ -54,6 +57,7 @@ public class CarroService {
 
             dto.setId(carroSalvoNoBanco.getId());
             dto.setModelo(carroSalvoNoBanco.getModelo());
+            dto.setPlaca(carroSalvoNoBanco.getPlaca());
             dto.setCor(carroSalvoNoBanco.getCor());
             dto.setStatus(carroSalvoNoBanco.getStatus());
             dto.setAno(carroSalvoNoBanco.getAno());
