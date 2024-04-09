@@ -10,6 +10,8 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+
 
 @Slf4j
 @RestController
@@ -43,5 +45,17 @@ public class CarroController {
         CarroDTO  carroAtualizado = service.update(jsonRequisicao);
 
         return ResponseEntity.ok(carroAtualizado);
+    }
+
+    @GetMapping
+    public ResponseEntity<List <CarroDTO>> getTodosCarros(@RequestParam(required = false) Status status) {
+        List<CarroDTO> carrosRetornados;
+        if (status != null){
+            carrosRetornados = service.buscarCarrosPorStatus(status);
+
+        } else {
+            carrosRetornados = service.buscarTodosCarros();
+        }
+        return ResponseEntity.ok(carrosRetornados);
     }
 }

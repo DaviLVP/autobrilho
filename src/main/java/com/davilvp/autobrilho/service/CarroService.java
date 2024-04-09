@@ -2,11 +2,14 @@ package com.davilvp.autobrilho.service;
 
 import com.davilvp.autobrilho.dto.CarroDTO;
 import com.davilvp.autobrilho.model.Carro;
+import com.davilvp.autobrilho.model.Status;
 import com.davilvp.autobrilho.repository.CarroRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Optional;
 
 @Service
@@ -69,5 +72,45 @@ public class CarroService {
         }
 
         return dto;
+    }
+
+    public List<CarroDTO> buscarTodosCarros() {
+       List<Carro> carros = carroRepository.findAll();
+       List<CarroDTO> carrosDTO = new ArrayList<>();
+       for (Carro carro : carros){
+
+           CarroDTO carroDTO = new CarroDTO();
+
+           carroDTO.setId(carro.getId());
+           carroDTO.setModelo(carro.getModelo());
+           carroDTO.setPlaca(carro.getPlaca());
+           carroDTO.setCor(carro.getCor());
+           carroDTO.setStatus(carro.getStatus());
+           carroDTO.setAno(carro.getAno());
+           carroDTO.setMarca(carro.getMarca());
+
+           carrosDTO.add(carroDTO);
+       }
+       return carrosDTO;
+    }
+
+    public List<CarroDTO> buscarCarrosPorStatus(Status status) {
+        List<Carro> carros = carroRepository.findByStatus(status);
+        List<CarroDTO> carrosDTO = new ArrayList<>();
+        for (Carro carro : carros){
+
+            CarroDTO carroDTO = new CarroDTO();
+
+            carroDTO.setId(carro.getId());
+            carroDTO.setModelo(carro.getModelo());
+            carroDTO.setPlaca(carro.getPlaca());
+            carroDTO.setCor(carro.getCor());
+            carroDTO.setStatus(carro.getStatus());
+            carroDTO.setAno(carro.getAno());
+            carroDTO.setMarca(carro.getMarca());
+
+            carrosDTO.add(carroDTO);
+        }
+        return carrosDTO;
     }
 }
