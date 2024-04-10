@@ -1,6 +1,7 @@
 package com.davilvp.autobrilho.controller;
 
 import com.davilvp.autobrilho.dto.CarroDTO;
+import com.davilvp.autobrilho.dto.RelatorioResponse;
 import com.davilvp.autobrilho.model.Carro;
 import com.davilvp.autobrilho.model.Status;
 import com.davilvp.autobrilho.service.CarroService;
@@ -57,5 +58,11 @@ public class CarroController {
             carrosRetornados = service.buscarTodosCarros();
         }
         return ResponseEntity.ok(carrosRetornados);
+    }
+
+    @GetMapping("/relatorio")
+    public ResponseEntity<RelatorioResponse> relatorio(){
+        RelatorioResponse relatorio = service.relatorio();
+        return ResponseEntity.ok(relatorio);
     }
 }

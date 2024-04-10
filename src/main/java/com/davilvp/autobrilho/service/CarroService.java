@@ -1,6 +1,7 @@
 package com.davilvp.autobrilho.service;
 
 import com.davilvp.autobrilho.dto.CarroDTO;
+import com.davilvp.autobrilho.dto.RelatorioResponse;
 import com.davilvp.autobrilho.model.Carro;
 import com.davilvp.autobrilho.model.Status;
 import com.davilvp.autobrilho.repository.CarroRepository;
@@ -8,9 +9,7 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Optional;
+import java.util.*;
 
 @Service
 @RequiredArgsConstructor
@@ -112,5 +111,20 @@ public class CarroService {
             carrosDTO.add(carroDTO);
         }
         return carrosDTO;
+    }
+
+    public RelatorioResponse relatorio() {
+        List<Carro> carros = carroRepository.findAll();
+        Map<Status, Integer> contadorRelatorio = new HashMap<>();
+
+        for(Carro carro : carros){
+            contadorRelatorio.put(carro.getStatus(), contadorRelatorio.getOrDefault(carro.getStatus(), 0)+1);
+
+        }
+        RelatorioResponse relatorio = new RelatorioResponse();
+        for (Map.Entry<Status, Integer> entry : contadorRelatorio.entrySet()) {
+            relatorio.getRelatorio().add(entry.getKey() + ": " + entry.getValue());
+        }
+        return relatorio;
     }
 }
