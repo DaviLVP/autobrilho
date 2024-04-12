@@ -23,15 +23,8 @@ public class CarroController {
 
     @PostMapping
     public ResponseEntity<CarroDTO> create(@RequestBody CarroDTO jsonRequisicao){
-        log.info("Carro entrando na aplicação // controller // marca: {}",jsonRequisicao.getMarca());
-        log.info("Carro entrando na aplicação // controller // placa: {}",jsonRequisicao.getPlaca());
-        log.info("Carro entrando na aplicação // controller // modelo: {}",jsonRequisicao.getModelo());
-        log.info("Carro entrando na aplicação // controller // ano: {}",jsonRequisicao.getAno());
-        log.info("Carro entrando na aplicação // controller // cor: {}",jsonRequisicao.getCor());
-        log.info("Carro entrando na aplicação // controller // status {}:",jsonRequisicao.getStatus());
 
-        CarroDTO carroDTORetorno = service.create(jsonRequisicao);
-        return ResponseEntity.status(HttpStatus.CREATED).body(carroDTORetorno);
+        return ResponseEntity.status(HttpStatus.CREATED).body(service.create(jsonRequisicao));
     }
 
     @PutMapping

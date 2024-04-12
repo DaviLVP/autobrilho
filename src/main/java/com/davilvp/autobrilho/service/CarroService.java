@@ -2,6 +2,7 @@ package com.davilvp.autobrilho.service;
 
 import com.davilvp.autobrilho.dto.CarroDTO;
 import com.davilvp.autobrilho.dto.RelatorioResponse;
+import com.davilvp.autobrilho.mapper.CarroMapper;
 import com.davilvp.autobrilho.model.Carro;
 import com.davilvp.autobrilho.model.Status;
 import com.davilvp.autobrilho.repository.CarroRepository;
@@ -16,29 +17,12 @@ import java.util.*;
 @Slf4j
 public class CarroService {
     private final CarroRepository carroRepository;
+    private final CarroMapper carroMapper;
 
-    public CarroDTO create(CarroDTO jsonRequisicao){
-       Carro carro = new Carro();
-       carro.setMarca(jsonRequisicao.getMarca());
-       carro.setModelo(jsonRequisicao.getModelo());
-       carro.setPlaca(jsonRequisicao.getPlaca());
-       carro.setCor(jsonRequisicao.getCor());
-       carro.setAno(jsonRequisicao.getAno());
-       carro.setStatus(jsonRequisicao.getStatus());
+    public CarroDTO create(CarroDTO carroDaRequisicao){
+        Carro carro = carroMapper.toEntity(carroDaRequisicao);
 
-
-       Carro carrolSalvoNoBanco = carroRepository.save(carro);
-
-       CarroDTO dto = new CarroDTO();
-       dto.setId(carrolSalvoNoBanco.getId());
-       dto.setModelo(carrolSalvoNoBanco.getModelo());
-       dto.setPlaca(jsonRequisicao.getPlaca());
-       dto.setCor(carrolSalvoNoBanco.getCor());
-       dto.setStatus(carrolSalvoNoBanco.getStatus());
-       dto.setAno(carrolSalvoNoBanco.getAno());
-       dto.setMarca(carrolSalvoNoBanco.getMarca());
-
-        return dto;
+       return carroMapper.toDTO(carroRepository.save(carro));
     }
     public CarroDTO update(CarroDTO carroDaRequisicao){
 
