@@ -29,16 +29,9 @@ public class CarroController {
 
     @PutMapping
     public ResponseEntity<CarroDTO> update(@RequestBody CarroDTO jsonRequisicao){
-        log.info("Carro entrando na aplicação // controller // marca: {}",jsonRequisicao.getMarca());
-        log.info("Carro entrando na aplicação // controller // placa: {}",jsonRequisicao.getPlaca());
-        log.info("Carro entrando na aplicação // controller // modelo: {}",jsonRequisicao.getModelo());
-        log.info("Carro entrando na aplicação // controller // ano: {}",jsonRequisicao.getAno());
-        log.info("Carro entrando na aplicação // controller // cor: {}",jsonRequisicao.getCor());
-        log.info("Carro entrando na aplicação // controller // status {}:",jsonRequisicao.getStatus());
 
-        CarroDTO  carroAtualizado = service.update(jsonRequisicao);
 
-        return ResponseEntity.ok(carroAtualizado);
+        return ResponseEntity.ok(service.update(jsonRequisicao));
     }
 
     @GetMapping

@@ -2,6 +2,7 @@ package com.davilvp.autobrilho.service;
 
 import com.davilvp.autobrilho.dto.CarroDTO;
 import com.davilvp.autobrilho.dto.RelatorioResponse;
+import com.davilvp.autobrilho.exceptional.ResourceNotFoundExceptional;
 import com.davilvp.autobrilho.mapper.CarroMapper;
 import com.davilvp.autobrilho.model.Carro;
 import com.davilvp.autobrilho.model.Status;
@@ -19,68 +20,44 @@ public class CarroService {
     private final CarroRepository carroRepository;
     private final CarroMapper carroMapper;
 
-    public CarroDTO create(CarroDTO carroDaRequisicao){
+    public CarroDTO create(CarroDTO carroDaRequisicao) {
         Carro carro = carroMapper.toEntity(carroDaRequisicao);
 
-       return carroMapper.toDTO(carroRepository.save(carro));
+        return carroMapper.toDTO(carroRepository.save(carro));
     }
-    public CarroDTO update(CarroDTO carroDaRequisicao){
 
-        Optional<Carro> carroOptional = carroRepository.findByPlaca(carroDaRequisicao.getPlaca());
-        Carro carroSalvoNoBanco;
-        CarroDTO dto = new CarroDTO();
-        if(carroOptional.isPresent()) {
-            Carro carro = carroOptional.get();
-            carro.setMarca(carroDaRequisicao.getMarca());
-            carro.setModelo(carroDaRequisicao.getModelo());
-            carro.setPlaca(carroDaRequisicao.getPlaca());
-            carro.setCor(carroDaRequisicao.getCor());
-            carro.setAno(carroDaRequisicao.getAno());
-            carro.setStatus(carroDaRequisicao.getStatus());
+    public CarroDTO update(CarroDTO carroDaRequisicao) {
 
-            carroSalvoNoBanco = carroRepository.save(carro);
-
-
-            dto.setId(carroSalvoNoBanco.getId());
-            dto.setModelo(carroSalvoNoBanco.getModelo());
-            dto.setPlaca(carroSalvoNoBanco.getPlaca());
-            dto.setCor(carroSalvoNoBanco.getCor());
-            dto.setStatus(carroSalvoNoBanco.getStatus());
-            dto.setAno(carroSalvoNoBanco.getAno());
-            dto.setMarca(carroSalvoNoBanco.getMarca());
-
-            return dto;
-        }   else {
-            log.error("carro nao encontrado");
-        }
-
-        return dto;
+        Carro carro = carroRepository.findByPlaca(carroDaRequisicao.getPlaca()).
+                orElseThrow(() -> new ResourceNotFoundExceptional("carro nao encontrado"));
+        carro = carroMapper.updateEntity(carroDaRequisicao, carro);
+        return carroMapper.toDTO(carroRepository.save(carro));
     }
 
     public List<CarroDTO> buscarTodosCarros() {
-       List<Carro> carros = carroRepository.findAll();
-       List<CarroDTO> carrosDTO = new ArrayList<>();
-       for (Carro carro : carros){
+        List<Carro> carros = carroRepository.findAll();
+        List<CarroDTO> carrosDTO = new ArrayList<>();
+        for (Carro carro : carros) {
 
-           CarroDTO carroDTO = new CarroDTO();
+            CarroDTO carroDTO = new CarroDTO();
 
-           carroDTO.setId(carro.getId());
-           carroDTO.setModelo(carro.getModelo());
-           carroDTO.setPlaca(carro.getPlaca());
-           carroDTO.setCor(carro.getCor());
-           carroDTO.setStatus(carro.getStatus());
-           carroDTO.setAno(carro.getAno());
-           carroDTO.setMarca(carro.getMarca());
+            carroDTO.setId(carro.getId());
+            carroDTO.setModelo(carro.getModelo());
+            carroDTO.setPlaca(carro.getPlaca());
+            carroDTO.setCor(carro.getCor());
+            carroDTO.setStatus(carro.getStatus());
+            carroDTO.setAno(carro.getAno());
+            carroDTO.setMarca(carro.getMarca());
 
-           carrosDTO.add(carroDTO);
-       }
-       return carrosDTO;
+            carrosDTO.add(carroDTO);
+        }
+        return carrosDTO;
     }
 
     public List<CarroDTO> buscarCarrosPorStatus(Status status) {
         List<Carro> carros = carroRepository.findByStatus(status);
         List<CarroDTO> carrosDTO = new ArrayList<>();
-        for (Carro carro : carros){
+        for (Carro carro : carros) {
 
             CarroDTO carroDTO = new CarroDTO();
 
@@ -101,8 +78,8 @@ public class CarroService {
         List<Carro> carros = carroRepository.findAll();
         Map<Status, Integer> contadorRelatorio = new HashMap<>();
 
-        for(Carro carro : carros){
-            contadorRelatorio.put(carro.getStatus(), contadorRelatorio.getOrDefault(carro.getStatus(), 0)+1);
+        for (Carro carro : carros) {
+            contadorRelatorio.put(carro.getStatus(), contadorRelatorio.getOrDefault(carro.getStatus(), 0) + 1);
 
         }
         RelatorioResponse relatorio = new RelatorioResponse();

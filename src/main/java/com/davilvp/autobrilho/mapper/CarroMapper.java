@@ -31,4 +31,14 @@ public class CarroMapper {
         return destination;
     }
 
+    public Carro updateEntity(CarroDTO source, Carro destination){
+        destination.setModelo(source.getModelo());
+        destination.setPlaca(source.getPlaca());
+        destination.setCor(source.getCor());
+        destination.setStatus(source.getStatus());
+        destination.setAno(source.getAno());
+        destination.setMarca(source.getMarca());
+        return destination;
+    }
+
 }
