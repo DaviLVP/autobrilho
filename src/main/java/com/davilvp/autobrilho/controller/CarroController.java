@@ -10,6 +10,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.client.HttpClientErrorException;
 
 import java.util.List;
 
@@ -25,6 +26,7 @@ public class CarroController {
     public ResponseEntity<CarroDTO> create(@RequestBody CarroDTO jsonRequisicao){
 
         return ResponseEntity.status(HttpStatus.CREATED).body(service.create(jsonRequisicao));
+
     }
 
     @PutMapping

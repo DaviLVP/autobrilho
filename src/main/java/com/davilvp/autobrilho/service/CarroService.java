@@ -1,5 +1,6 @@
 package com.davilvp.autobrilho.service;
 
+import com.davilvp.autobrilho.controller.exception.BusinessException;
 import com.davilvp.autobrilho.dto.CarroDTO;
 import com.davilvp.autobrilho.dto.RelatorioResponse;
 import com.davilvp.autobrilho.exceptional.ResourceNotFoundExceptional;
@@ -9,6 +10,7 @@ import com.davilvp.autobrilho.model.Status;
 import com.davilvp.autobrilho.repository.CarroRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.dao.DataAccessException;
 import org.springframework.stereotype.Service;
 
 import java.util.*;
@@ -21,9 +23,14 @@ public class CarroService {
     private final CarroMapper carroMapper;
 
     public CarroDTO create(CarroDTO carroDaRequisicao) {
-        Carro carro = carroMapper.toEntity(carroDaRequisicao);
+        try {
+            Carro carro = carroMapper.toEntity(carroDaRequisicao);
+            return carroMapper.toDTO(carroRepository.save(carro));
 
-        return carroMapper.toDTO(carroRepository.save(carro));
+        } catch(DataAccessException e){
+            throw new BusinessException(e.getMessage());
+        }
+
     }
 
     public CarroDTO update(CarroDTO carroDaRequisicao) {
